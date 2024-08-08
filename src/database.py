@@ -17,6 +17,7 @@
 
 from influxdb_client import InfluxDBClient
 from influxdb_client.client.write_api import SYNCHRONOUS
+from src.exceptions import NoDataError
 from configparser import ConfigParser
 from mdclogpy import Logger
 from requests.exceptions import RequestException
@@ -27,7 +28,7 @@ logger = Logger(name=__name__)
 
 class DATABASE(object):
     
-    def __init__(self, dbname='Timeseries', host="10.104.164.151", port='80', token='wy50XfpUqTxuYhhi5PWea7gbfiGz56bl', org='influxdata'):
+    def __init__(self, dbname='Timeseries', host="10.106.60.11", port='80', token='5LTgnfITa11w24CELs0wtwUPzT3VVdJX', org='influxdata'):
         self.host = host
         self.port = port
         self.token = token
@@ -71,12 +72,15 @@ class DATABASE(object):
         query = f'from(bucket:"{self.dbname}") |> range(start: -1d) |> filter(fn: (r) => r._measurement == "{meas}")'
         query += f' |> filter(fn: (r) => r.{param} == "{Id}")'
         query += f' |> limit(n: {limit})'
-        self.query(query, meas, Id)
+        print("query: ", query)
+        # self.query(query, meas, Id)
 
     def query(self, query, meas, Id=False):
         try:
             query_api = self.client.query_api()
+            print("sebelum result")
             result = query_api.query(org=self.org, query=query)
+            print("result: ", result)
             if not result:
                 raise NoDataError
             else:

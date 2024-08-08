@@ -29,7 +29,7 @@ logger = Logger(name=__name__)
 
 class DATABASE(object):
 
-    def __init__(self, dbname='Timeseries', host="10.104.164.151", port='80', token='wy50XfpUqTxuYhhi5PWea7gbfiGz56bl', org='influxdata'):
+    def __init__(self, dbname='Timeseries', host="10.106.60.11", port='80', token='5LTgnfITa11w24CELs0wtwUPzT3VVdJX', org='influxdata'):
         self.host = host
         self.port = port
         self.token = token
